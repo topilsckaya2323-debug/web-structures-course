@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Storage</title>
+</head>
+<body>
+    <header>
+        <h1>{{ page_title }}</h1>
+        <nav>
+            <a href="/">Главная</a> | 
+            <a href="/about/">О нас</a>
+        </nav>
+        <hr>
+    </header>
+    
+    <main>
+        <p>Добро пожаловать в систему хранения.</p>
+        <hr>
+        
+        {% if models_count > 0 %}
+        <p>Сейчас в базе: <b>{{ models_count }}</b> модели.</p>
+        {% else %}
+        <p>База пуста. Загрузите что-нибудь!</p>
+        {% endif %}
+        
+        <h2>Доступные ассеты:</h2>
+        <ul>
+            {% for asset in assets %}
+            <li>
+                <strong>{{ asset.name }}</strong>
+                <small>(Размер: {{ asset.file_size }})</small>
+                <a href="#">[Скачать]</a>
+            </li>
+            {% empty %}
+            <li>Нет доступных моделей.</li>
+            {% endfor %}
+        </ul>
+    </main>
+    
+    <footer>
+        <hr>
+        <p>&copy; 2024 Web Structures Course</p>
+    </footer>
+</body>
+</html>
