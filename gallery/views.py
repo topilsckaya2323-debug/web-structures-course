@@ -1,3 +1,4 @@
+'''
 from django.shortcuts import render
 
 def home(request):
@@ -23,5 +24,25 @@ def about(request):
         'page_title': 'О проекте',
         'author_name': '[SAKURA]',  # Замените на своё имя
         'course_name': 'Web Структуры'
+    }
+    return render(request, 'gallery/about.html', context)
+'''
+from django.shortcuts import render
+from .models import Asset  # Импортируем модель, чтобы спрашивать данные
+
+def home(request):
+    # ORM запрос: "Дай мне все объекты Asset из базы"
+    assets = Asset.objects.all()
+    
+    context_data = {
+        'page_title': 'Главная Галерея',
+        'assets': assets,  # передаем реальный QuerySet (список)
+    }
+    return render(request, 'gallery/index.html', context_data)
+
+def about(request):
+    """Страница 'О нас'"""
+    context = {
+        'page_title': 'О нас',
     }
     return render(request, 'gallery/about.html', context)

@@ -17,30 +17,30 @@
     <main>
         <p>Добро пожаловать в систему хранения.</p>
         <hr>
-        
-        {% if models_count > 0 %}
-        <p>Сейчас в базе: <b>{{ models_count }}</b> модели.</p>
-        {% else %}
-        <p>База пуста. Загрузите что-нибудь!</p>
-        {% endif %}
-        
+    <!--
+       {% if assets|length > 0 %}
+       <p>Сейчас в базе: <b>{{ assets|length }}</b> модели.</p>
+       {% else %}
+       <p>База пуста. Загрузите что-нибудь!</p>
+       {% endif %} -->
         <h2>Доступные ассеты:</h2>
         <ul>
             {% for asset in assets %}
             <li>
-                <strong>{{ asset.name }}</strong>
-                <small>(Размер: {{ asset.file_size }})</small>
-                <a href="#">[Скачать]</a>
+                <strong>{{ asset.title }}</strong>
+                
+                <!-- asset.file.url – это ссылка на файл (/media/3d_assets/...) -->
+                <!-- asset.file.size – размер в байтах. filter 'filesizeformat' делает его читаемым (MB/KB) -->
+                <small>Размер: {{ asset.file.size|filesizeformat }}</small>
+                <a href="{{ asset.file.url }}" download>[Скачать файл]</a>
             </li>
-            {% empty %}
-            <li>Нет доступных моделей.</li>
             {% endfor %}
         </ul>
     </main>
     
     <footer>
         <hr>
-        <p>&copy; 2024 Web Structures Course</p>
+        <p>&copy; 2026 Web Structures Course</p>
     </footer>
 </body>
 </html>

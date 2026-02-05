@@ -123,3 +123,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import os
+
+# Базовый URL для доступа к медиафайлам через браузер
+# Если здесь '/media/', то файл будет доступен по адресу:
+# http://ваш-сайт/media/3d_assets/ваша-модель.glb
+MEDIA_URL = '/media/'
+
+# Абсолютный путь к папке на сервере, где будут храниться медиафайлы
+# BASE_DIR - автоматическая переменная Django (корень проекта)
+# 'media' - название папки, которая будет создана
+MEDIA_ROOT = BASE_DIR / 'media'
