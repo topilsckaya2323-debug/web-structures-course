@@ -19,13 +19,34 @@
         cursor: pointer;
       }
       /* ДОБАВЬТЕ ЭТОТ СТИЛЬ ДЛЯ ОШИБОК */
-
       .errorlist {
         color: #ff69b4;
         list-style: none;
         padding: 0;
         margin: 10px 0;
         font-weight: lighter;
+      }
+      /* Стили для полей формы */
+      .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      select.form-control {
+        background-color: white;
+      }
+      .field-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+      }
+      .help-text {
+        color: #666;
+        font-size: 12px;
+        margin-top: 5px;
       }
     </style>
   </head>
@@ -38,11 +59,53 @@
     <form method="post" enctype="multipart/form-data">
       <!-- Защита от хакеров -->
       {% csrf_token %}
-      <!-- Django сам нарисует label и input для всех полей -->
-      <div class="form-group">{{ form.as_p }}</div>
+      
+      <!-- Вручную рисуем поля формы для лучшего контроля -->
+      
+      <!-- Поле "Название" -->
+      <div class="form-group">
+        <label class="field-label" for="{{ form.title.id_for_label }}">Название модели:</label>
+        {{ form.title }}
+        {% if form.title.errors %}
+          <ul class="errorlist">
+            {% for error in form.title.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      
+      <!-- 👇 НОВОЕ ПОЛЕ: КАТЕГОРИЯ -->
+      <div class="form-group">
+        <label class="field-label" for="{{ form.category.id_for_label }}">Категория:</label>
+        {{ form.category }}
+        {% if form.category.errors %}
+          <ul class="errorlist">
+            {% for error in form.category.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <div class="help-text">Выберите категорию для модели</div>
+      </div>
+      
+      <!-- Поле "Файл" -->
+      <div class="form-group">
+        <label class="field-label" for="{{ form.file.id_for_label }}">3D файл:</label>
+        {{ form.file }}
+        {% if form.file.errors %}
+          <ul class="errorlist">
+            {% for error in form.file.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <div class="help-text">Поддерживаются форматы: .glb, .gltf</div>
+      </div>
+      
       <!-- БЛОК ПРЕВЬЮ (Новый) -->
       <div style="margin-bottom: 20px">
-        <p>Авто-генерация превью:</p>
+        <p style="font-weight: bold; margin-bottom: 10px;">Авто-генерация превью:</p>
         <!-- Сюда JS вставит Canvas с 3D моделью -->
         <div
           id="preview-container"
@@ -51,6 +114,8 @@
             height: 200px;
             background: #eee;
             border: 1px solid #ccc;
+            position: relative;
+            overflow: hidden;
           "
         >
           <span
@@ -59,35 +124,53 @@
               padding: 80px 0;
               text-align: center;
               color: #999;
+              position: absolute;
+              width: 100%;
             "
-            >Выберите файл...</span
-          >
+            id="preview-placeholder"
+          >Выберите файл...</span>
         </div>
         <!-- СКРЫТОЕ ПОЛЕ (Сюда JS запишет длинную строку base64) -->
         <input type="hidden" name="image_data" id="id_image_data" />
       </div>
+      
       <!-- Кнопка отправки (блокируем её, пока не сгенерируется картинка) -->
       <button type="submit" id="submit-btn" disabled>Загрузить в базу</button>
-      <!-- ... -->
-      <!-- Подключаем скрипт-генератор (создадим его на следующем шаге) -->
-      <!-- Важно: type="module", чтобы работали импорты Three.js -->
-      {% load static %}
-      <script type="importmap">
-        {
-          "imports": {
-            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-          }
-        }
-      </script>
-      <script
-        type="module"
-        src="{% static 'gallery/js/autothumb.js' %}"
-      ></script>
-
     </form>
 
     <br />
     <a href="{% url 'home' %}">← Назад в галерею</a>
+
+    <!-- Подключаем скрипт-генератор (создадим его на следующем шаге) -->
+    <!-- Важно: type="module", чтобы работали импорты Three.js -->
+    {% load static %}
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script
+      type="module"
+      src="{% static 'gallery/js/autothumb.js' %}"
+    ></script>
   </body>
+  <body>
+    <!-- Простая навигация -->
+    <div style="background: #333; padding: 10px 20px; margin-bottom: 20px;">
+        <a href="{% url 'home' %}" style="color: white; text-decoration: none; margin-right: 15px;">🏠 Главная</a>
+        <a href="{% url 'about' %}" style="color: white; text-decoration: none; margin-right: 15px;">📖 О нас</a>
+        {% if user.is_authenticated %}
+            <span style="color: #ffc107;">{{ user.username }}</span>
+            <a href="{% url 'logout' %}" style="color: #dc3545; text-decoration: none; margin-left: 15px;">Выйти</a>
+        {% else %}
+            <a href="{% url 'login' %}" style="color: #007bff; text-decoration: none;">Войти</a>
+        {% endif %}
+    </div>
+    
+    <!-- Остальной код формы -->
+    <h1>Загрузить новую 3D модель</h1>
+    <!-- ... -->
 </html>

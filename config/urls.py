@@ -15,8 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from gallery.views import home, about, upload  # Импортируем обе функции
+from django.urls import path,  include
+from gallery.views import home, about, upload  # 👈 УДАЛИЛ category_view
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,10 +24,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('about/', about, name='about'),
-    path('upload/', upload, name='upload'),  # Добавляем этот маршрут
+    path('upload/', upload, name='upload'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('users.urls')),
 ]
 # ВНИМАНИЕ: Эта магия работает только если DEBUG = True (режим разработки)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-    

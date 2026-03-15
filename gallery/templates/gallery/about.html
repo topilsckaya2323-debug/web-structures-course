@@ -2,24 +2,72 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>О проекте - 3D Storage</title>
+    <title>О нас</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #facbf6;
+        }
+        .nav {
+            background: #5d108a;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>О проекте</h1>
-        <nav>
-            <a href="/">Главная</a> |
-            <a href="/about/">О нас</a>
-        </nav>
-    </header>
+    <!-- Навигация -->
+    <div class="nav">
+        <a href="{% url 'home' %}">🏠 Главная</a>
+        <a href="{% url 'about' %}" style="font-weight: bold;">📖 О нас</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'upload' %}" style="color: #ffffff;">+ Загрузить</a>
+            <span style="color: #ffc107; float: right;">{{ user.username }}</span>
+            <a href="{% url 'logout' %}" style="color: #ffffff; float: right; margin-right: 15px;">Выйти</a>
+        {% else %}
+            <a href="{% url 'login' %}" style="color: #ffffff; float: right;">Войти</a>
+            <a href="{% url 'register' %}" style="color: #ffffff; float: right; margin-right: 15px;">Регистрация</a>
+        {% endif %}
+    </div>
     
-    <main>
-        <h2>3D Хранилище</h2>
-        <p><strong>Создатель:</strong> Андреева Н.К.</p>
-    </main>
-    
-    <footer>
-        <p>&copy; 2026 Web Structures Course</p>
-    </footer>
+    <div class="container">
+        <h1>📖 О проекте Julka3D</h1>
+        
+        <p style="font-size: 18px; line-height: 1.6;">
+            Добро пожаловать в нашу галерею 3D моделей! Здесь вы можете:
+        </p>
+        
+        <ul style="font-size: 16px; line-height: 2;">
+            <li>✅ Просматривать различные 3D модели</li>
+            <li>✅ Скачивать понравившиеся модели</li>
+            {% if user.is_authenticated %}
+                <li>✅ Загружать свои собственные модели</li>
+            {% else %}
+                <li>✅ <a href="{% url 'register' %}">Зарегистрируйтесь</a>, чтобы загружать свои модели</li>
+            {% endif %}
+        </ul>
+        
+        <p style="margin-top: 30px; color: #666;">
+            Все модели представлены в форматах .glb и .gltf для максимальной совместимости.
+        </p>
+    </div>
 </body>
 </html>

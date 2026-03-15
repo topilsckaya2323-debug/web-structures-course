@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Наше приложение:
+    'users',
     'gallery',
 ]
 
@@ -153,3 +152,7 @@ BASE_DIR / 'gallery' / 'static',
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Включаем сжатие и кэширование статики для WhiteNoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Настройки для авторизации
+LOGIN_REDIRECT_URL = 'home'  # Куда идти после входа
+LOGOUT_REDIRECT_URL = 'home'  # Куда идти после выхода
+LOGIN_URL = 'login'  # Куда идти если не авторизован

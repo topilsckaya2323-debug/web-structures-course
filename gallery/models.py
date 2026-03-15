@@ -3,6 +3,23 @@ from django.db import models
 from django.conf import settings
 
 class Asset(models.Model):
+    # --- НОВОЕ: Категории для моделей ---
+    CATEGORY_CHOICES = [
+        ('animals', '🐾 Животные'),
+        ('characters', '👥 Персонажи'),
+        ('vehicles', '🚗 Техника'),
+        ('nature', '🌿 Природа'),
+        ('fantasy', '🧙 Фэнтези'),
+        ('other', '📦 Другое'),
+    ]
+    
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='other',
+        verbose_name="Категория"
+    )
+    
     # Поле "Название" - строка до 200 символов
     title = models.CharField(max_length=200, verbose_name="Название модели")
     
@@ -33,8 +50,3 @@ class Asset(models.Model):
     class Meta:
         verbose_name = "3D Модель"
         verbose_name_plural = "3D Модели"
-
-
-
-
-
