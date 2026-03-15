@@ -10,6 +10,7 @@
         max-width: 600px;
         margin: 2rem auto;
         padding: 0 1rem;
+        background: #f4d1f8;
       }
       .form-group {
         margin-bottom: 1rem;
@@ -51,7 +52,7 @@
     </style>
   </head>
   <body>
-    <h1>Загрузить новую 3D модель</h1>
+    <h1 style="color: #490372;">Загрузить новую 3D модель</h1>
     <!--
     1. method="post": чтобы отправить данные.
     2. enctype="multipart/form-data": ОБЯЗАТЕЛЬНО для файлов!
@@ -139,7 +140,9 @@
     </form>
 
     <br />
-    <a href="{% url 'home' %}">← Назад в галерею</a>
+    <a href="{% url 'home' %}" style="color: #490372; text-decoration: none; font-weight: bold;">
+    ← Назад в галерею
+</a>
 
     <!-- Подключаем скрипт-генератор (создадим его на следующем шаге) -->
     <!-- Важно: type="module", чтобы работали импорты Three.js -->
@@ -157,20 +160,4 @@
       src="{% static 'gallery/js/autothumb.js' %}"
     ></script>
   </body>
-  <body>
-    <!-- Простая навигация -->
-    <div style="background: #333; padding: 10px 20px; margin-bottom: 20px;">
-        <a href="{% url 'home' %}" style="color: white; text-decoration: none; margin-right: 15px;">🏠 Главная</a>
-        <a href="{% url 'about' %}" style="color: white; text-decoration: none; margin-right: 15px;">📖 О нас</a>
-        {% if user.is_authenticated %}
-            <span style="color: #ffc107;">{{ user.username }}</span>
-            <a href="{% url 'logout' %}" style="color: #dc3545; text-decoration: none; margin-left: 15px;">Выйти</a>
-        {% else %}
-            <a href="{% url 'login' %}" style="color: #007bff; text-decoration: none;">Войти</a>
-        {% endif %}
-    </div>
-    
-    <!-- Остальной код формы -->
-    <h1>Загрузить новую 3D модель</h1>
-    <!-- ... -->
 </html>

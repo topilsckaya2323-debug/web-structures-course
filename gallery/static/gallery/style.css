@@ -1,283 +1,223 @@
-/* Базовый сброс и шрифт */
+/* Базовый сброс */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #ffe2fd; /* Светло-серый фон */
-    margin: 0;
-    padding: 0px;
+    background-color: #ffe2fd;
+    width: 100%;
+    overflow-x: hidden;
 }
+
+/* Шапка */
 header {
-    margin-bottom: 40px;
-    text-align: center;
+    background: #333;
+    color: white;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
-/* --- СЕТКА (GRID) --- */
+
+/* Основной контейнер */
+.main-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* Боковая панель */
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+/* Контент */
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Панель поиска */
+.toolbar {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.toolbar form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 3;
+    min-width: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.sort-select {
+    flex: 1;
+    min-width: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.search-btn {
+    padding: 10px 20px;
+    background: #ff1495;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Сетка */
 .gallery-grid {
     display: grid;
-/* Это магическая строка адаптивности:
-Создавай столько колонок, сколько влезет (auto-fill).
-Минимальная ширина колонки 280px.
-Если места много - растягивай их (1fr). */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 50px; /* Расстояние между карточками */
-    max-width: 1400px;
-     margin-left: 14px;  /* Сдвиг вправо на 50px */
-    margin-right: auto;
-    width: 120%;
+    gap: 20px;
+    width: 100%;
 }
-/* --- КАРТОЧКА (CARD) --- */
+
+/* Карточка */
 .asset-card {
     background: white;
     border-radius: 12px;
-    overflow: hidden; /* Чтобы содержимое не вылезало за скругленные углы */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Легкая тень */
-    transition: transform 0.2s;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-.asset-card:hover {
-    transform: translateY(-5px); /* При наведении карточка чуть взлетает */
-}
-/* Место для будущего 3D-вьювера или скриншота */
+
 .card-preview {
     height: 200px;
-    background: radial-gradient(circle, #ffffff, #e0e0e0);
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-info {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Кнопка Play */
+.play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 60px;
+    height: 60px;
+    background: rgba(135, 37, 180, 0.4) !important;
+    border-radius: 50%;
+    border: 2px solid white;
+    color: white;
+    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #888;
-    font-size: 3rem;
-    position: relative;
-}
-.card-info {
-    padding: 20px;
-}
-.card-title {
-    margin: 0 0 10px 0;
-    font-size: 1.2rem;
-    color: #333;
-}
-.card-meta {
-    font-size: 0.9rem;
-    color: #777;
-    margin-bottom: 15px;
-}
-/* Кнопка */
-.btn {
-    display: inline-block;
-    text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-}
-.btn:hover {
-    background-color: #0056b3;
-}
-/* Сам экран загрузки (поверх 3D) */
-.loader-overlay {
-position: absolute;
-top: 0; left: 0; right: 0; bottom: 0;
-background: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый */
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-z-index: 10;
-transition: opacity 0.3s; /* Плавное исчезновение */
-}
-/* Полоска прогресса (фон) */
-.progress-bar {
-width: 60%;
-height: 6px;
-background: #e0e0e0;
-border-radius: 3px;
-overflow: hidden;
-margin-top: 10px;
-}
-/* Полоска прогресса (заполнение) */
-.progress-fill {
-width: 0%; /* Будем менять это через JS */
-height: 100%;
-background-color: #490372; /* Синий цвет */
-transition: width 0.1s;
-}
-.error-msg {
-color: #dc3545;
-text-align: center;
-padding: 20px;
+    transition: none !important;
+    z-index: 5;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
-/* Делаем контейнер relative, чтобы позиционировать кнопку Play по центру */
-.card-preview {
-position: relative;
-cursor: pointer;
-background-size: cover;
-background-position: center;
-}
-/* Затемнение картинки при наведении */
-.card-preview:hover::after {
-content: '';
-position: absolute;
-top: 0; left: 0; right: 0; bottom: 0;
-background: rgba(255, 255, 255, 0.1);
-}
-/* Кнопка Play */
-.play-btn {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%) !important; /* Зафиксировали позицию */
-width: 60px;
-height: 60px;
-background: rgba(135, 37, 180, 0.4) !important;
-border-radius: 50%;
-border: 1px solid white;
-color: white;
-font-size: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: none; /* Отключил все анимации */
-z-index: 5;
-}
-/* Убираем все изменения при наведении */
+/* При наведении - ТОЛЬКО цвет, нихуя больше */
 .card-preview:hover .play-btn {
-background: rgba(255, 255, 255, 0.3) !important;
-transform: translate(-50%, -50%) !important; /* Та же позиция */
+    background: rgba(255, 255, 255, 0.3) !important;
+    transform: translate(-50%, -50%) !important;
+    border-color: white !important;
+    width: 60px !important;
+    height: 60px !important;
 }
 
-/* Панель инструментов */
-.toolbar {
-background: white;
-padding: 15px;
-border-radius: 12px;
-box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-margin-bottom: 30px;
-display: flex;
-gap: 15px;
-align-items: center;
-width: 113%;
-flex-wrap: wrap; /* Чтобы на мобильном переносилось */
-}
-.search-input {
-flex-grow: 1; /* Занимает всё свободное место */
-padding: 10px 15px;
-border: 1px solid #ddd;
-border-radius: 6px;
-font-size: 1rem;
-
-}
-.sort-select {
-padding: 10px;
-border: 1px solid #ddd;
-border-radius: 6px;
-background: rgb(255, 255, 255);
-cursor: pointer;
-}
-.sort-select:hover {
-background: #ffffff;  /* фиолетовый фон при наведении */
-color: rgb(0, 0, 0);  /* белый текст */
-border-color: #000000 !important;
-}
-.search-btn {
-padding: 10px 25px;
-background-color: #ff1495;
-color: white;
-border: none;
-border-radius: 6px;
-cursor: pointer;
-font-size: 1rem;
-}
-.search-btn:hover {
-background-color: #ff2ced;
-}
-.reset-link {
-color: #dc3545;
-text-decoration: none;
-font-size: 0.9rem;
+/* На всякий случай для мобил */
+.card-preview:active .play-btn {
+    transform: translate(-50%, -50%) !important;
 }
 
-/* Фильтры по дате */
-.date-filter {
-    padding: 4px 12px;
-    background-color: #f0f0f0;
-    border-radius: 20px;
-    color: #333;
+/* Категории */
+.categories-list {
+    list-style: none;
+}
+
+.category-item {
+    margin-bottom: 8px;
+}
+
+.category-link {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
     text-decoration: none;
+    color: #333;
+    border: 1px solid #e0e0e0;
+}
+
+.category-link.active {
+    background: #f85df8;
+    color: white;
+}
+
+.category-emoji {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.category-name {
+    flex: 1;
     font-size: 14px;
-    transition: all 0.2s;
 }
 
-.date-filter:hover {
-    background-color: #c099fd;
-    color: white;
+.category-count {
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
 }
 
-.date-filter.active {
-    background-color: #f85df8;
-    color: white;
-    font-weight: bold;
+/* Для мобильных */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+    
+    .toolbar form {
+        flex-direction: column;
+    }
+    
+    .search-input,
+    .sort-select,
+    .search-btn {
+        width: 100%;
+    }
 }
-
-.date-filter.reset {
-    background-color: #ffeeee;
-}
-
-.date-filter.reset:hover {
-    background-color: #dc3545;
-    color: white;
-}
-
-.pagination {
-margin-top: 40px;
-text-align: center;
-padding: 20px;
-}
-.pagination a {
-display: inline-block;
-padding: 8px 16px;
-margin: 0 5px;
-background: white;
-border: 1px solid #ddd;
-border-radius: 4px;
-text-decoration: none;
-color: #333;
-}
-.pagination a:hover {
-background: #f0f0f0;
-}
-.pagination .current {
-font-weight: bold;
-margin: 0 10px;
-}
-.messages-container {
-position: fixed;
-top: 20px;
-right: 20px;
-z-index: 1000;
-width: 300px;
-}
-.alert {
-padding: 15px;
-margin-bottom: 10px;
-border-radius: 4px;
-color: white;
-box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-animation: slideIn 0.5s ease-out;
-}
-.alert.success { background-color: #28a745; } /* Зеленый */
-.alert.error { background-color: #dc3545; } /* Красный */
-.alert.warning { background-color: #ffc107; color: black; } /* Желтый */
-@keyframes slideIn {
-from { transform: translateX(100%); opacity: 0; }
-to { transform: translateX(0); opacity: 1; }
-}
-.card-title {
-/* Старые стили оставьте... */
-margin: 0 0 10px 0;
-font-size: 1.2rem;
-color: #333;
-/* Новые стили обрезки */
-white-space: nowrap; /* Запрет переноса на новую строку */
-overflow: hidden; /* Скрыть хвост */
-text-overflow: ellipsis; /* Добавить троеточие (...) */
-}
-

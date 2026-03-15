@@ -91,8 +91,6 @@ export function loadModel(containerId, modelUrl) {
         },
         // B. ON PROGRESS (Прогресс)
         (xhr) => {
-            // xhr.total - общий вес файла в байтах
-            // xhr.loaded - сколько скачалось
             if (xhr.total > 0) {
                 const percent = (xhr.loaded / xhr.total) * 100;
                 progressFill.style.width = percent + '%';
